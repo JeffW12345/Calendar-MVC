@@ -1,0 +1,286 @@
+﻿@model IEnumerable<BookingCalendar.Models.BookingTerm>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="stylesheet" href="~/Content/Site.css">
+
+<h2 style="text-align:center"><b>Booking Calendar</b></h2>
+
+<!-- The two divs below are set to invisible -->
+<div id="booked-date">
+    @foreach (var item in Model)
+    {
+        @Html.DisplayFor(modelItem => item.BookedDay)}
+</div>
+
+<div id="booked-info">
+    @foreach (var item in Model)
+    {
+        @Html.DisplayFor(modelItem => item.BookedInfo)
+        <span>##</span>
+    }
+</div>
+
+<style>
+    #calendar-container {
+        padding: 0px;
+        width: 100vh;
+        height: 100vh;
+        background-color: white;
+    }
+
+    .months {
+        margin: 1%;
+        width: 31%;
+        height: 22%;
+        padding: 2%;
+        float: left;
+    }
+
+    .month-row {
+        width: 100%;
+        height: 12%;
+    }
+
+    .month-top-row {
+        width: 100%;
+        height: 12%;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    .month-days-row {
+        width: 100%;
+        height: 12%;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    .calendar-column {
+        width: 14.2%;
+        height: 100%;
+        float: left;
+        text-align: center;
+        color: red;
+    }
+
+    .day-of-week-column {
+        width: 14.2%;
+        height: 100%;
+        float: left;
+        font-weight: 700;
+    }
+
+    #booked-date {
+        display: none;
+    }
+
+    #booked-info {
+        display: none;
+    }
+
+    .blue-oval {
+        width: 14.2%;
+        height: 100%;
+        background: #1E90FF;
+        border-radius: 100px / 50px;
+        text-align: center;
+        color: white;
+    }
+    .message {
+        background: #1E90FF;
+    }
+</style>
+
+<div id="calendar-container"> </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+
+<script>
+    // Add 12 calendars to the calendar container
+
+    var container = document.getElementById("calendar-container");
+    for (var i = 0; i < 12; i++) {
+        var calendar = document.createElement("div");
+        calendar.setAttribute("class", "months");
+        calendar.setAttribute("monthNumber", i);
+        container.appendChild(calendar);
+    }
+
+    // Add 7 rows to each month
+
+    var months = document.getElementsByClassName("months");
+    var topRowCount = 0;
+    var thirdRowCount = 0;
+    for (var month of months) {
+        for (var j = 0; j < 9; j++) {
+            var newRow = document.createElement("div");
+            newRow.setAttribute("class", "month-row");
+            newRow.setAttribute("row-number", j);
+            if (j == 0) {
+                newRow.setAttribute("class", "month-top-row");
+                newRow.innerHTML = getMonthName(topRowCount++);
+            }
+            if (j == 2) {
+                newRow.setAttribute("class", "month-days-row");
+                thirdRowCount++;
+            }
+            month.appendChild(newRow);
+        }
+    }
+
+    function getMonthName(monthNumber) {
+        switch (monthNumber) {
+            case 0:
+                return "January";
+            case 1:
+                return "February";
+            case 2:
+                return "March";
+            case 3:
+                return "April";
+            case 4:
+                return "May";
+            case 5:
+                return "June";
+            case 6:
+                return "July";
+            case 7:
+                return "August";
+            case 8:
+                return "September";
+            case 9:
+                return "October";
+            case 10:
+                return "November";
+            default:
+                return "December";
+        }
+    }
+
+    // Add columns to the month boxes (all rows containing a day of the week or dates)
+
+    var rows = document.getElementsByClassName("month-row");
+
+    for (var individualRow of rows) {
+        if (individualRow.getAttribute("row-number") <= 1) {
+            continue;
+        }
+        for (var k = 0; k < 7; k++) {
+            var col = document.createElement("div");
+            col.setAttribute("class", "calendar-column");
+            individualRow.appendChild(col);
+        }
+    }
+
+    // Populate days of the week row
+
+    var daysRow = document.getElementsByClassName("month-days-row");
+
+    for (var thisMonthsRow of daysRow) {
+        for (var colNum = 0; colNum < 7; colNum++) {
+            var col = document.createElement("div");
+            col.setAttribute("class", "day-of-week-column");
+            col.innerHTML = getDayName(colNum);
+            thisMonthsRow.appendChild(col);
+        }
+    }
+
+    function getDayName(dayNum) {
+        switch (dayNum) {
+            case 0:
+                return "Mon";
+            case 1:
+                return "Tue";
+            case 2:
+                return "Wed";
+            case 3:
+                return "Thu";
+            case 4:
+                return "Fri";
+            case 5:
+                return "Sat";
+            case 6:
+                return "Sun";
+        }
+    }
+
+    // Add day numbers to calendars
+    var months = document.getElementsByClassName("months");
+    for (var month of months) {
+        var year = new Date().getFullYear();
+        var monthNum = parseInt(month.getAttribute("monthNumber")); // Jan = 0, Feb = 1, etc.
+        var dayOnFirstOfMonth = new Date(year, monthNum, 1).getDay(); // With getDay() method, 0 is Sunday, 1 Monday, etc
+        var daysInMonth = new Date(year, monthNum + 1, 0).getDate();
+        var dateEntries = month.getElementsByClassName("calendar-column");
+        var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 1 : 6; // Because there may be blank cells, due to the first not being on Monday
+        var count = 1;
+        for (var i = daysToAdd; i < daysToAdd + daysInMonth; i++) {
+            dateEntries[i].textContent = count++;
+        }
+    }
+
+    // Create a list of dates and associated info. 
+
+    var bookedDates = document.getElementById("booked-date").textContent;
+    var bookedDatesList = bookedDates.split("00:00:00");
+    var bookedInfo = document.getElementById("booked-info").textContent;
+    bookedInfoList = bookedInfo.split("##");
+    var combinedList = [];
+    var count = 0;
+    for (var bookedDatesListElem of bookedDatesList) {
+        var tempList = [];
+        bookedDatesListElem = bookedDatesListElem.trim();
+        var d = bookedDatesListElem.substring(0, 2);
+        var m = bookedDatesListElem.substring(3, 5);
+        var y = bookedDatesListElem.substring(6, 10);
+        tempList.push(d);
+        tempList.push(m);
+        tempList.push(y);
+        tempList.push(bookedInfoList[count++]);
+        combinedList.push(tempList);
+    }
+
+    // Add event listener and calendar entry
+
+    for (var list of combinedList) {
+        var elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
+        $(elem).addClass("blue-oval");
+        $(elem).addClass("message");
+        console.log(list[3]);
+        elem.onclick = function () {
+            var message = list[3];
+            alert(message);
+        };
+    }
+    // Month passed in using 0 = Jan, 1 = Feb, etc.
+
+    function getDateElem(day, mth, yr) {
+        // Prevents dates from previous or future years being added.
+        if (yr != new Date().getFullYear()) {
+            return;
+        }
+        var month = document.getElementsByClassName("months")[mth];
+        var entries = month.getElementsByClassName("calendar-column");
+        var dayOnFirstOfMonth = new Date(yr, mth, 1).getDay(); // With getDay() method, 0 is Sunday, 1 is Monday, etc
+        var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 2 : 5; // Because there may be blank cells, due to the first not being on Monday
+        console.log(day + daysToAdd);
+        return entries[day + daysToAdd];
+    }
+
+    function postMessage(message) {
+
+    }
+
+</script>
+
+
+
+
+
