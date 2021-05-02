@@ -27,6 +27,8 @@ namespace BookingCalendar.Controllers
         // GET: BookingTerms
         public ActionResult Index()
         {
+            DeleteRecords();
+            AddRecords();
             return View(db.BookingTerm.ToList());
         }
 
