@@ -21,7 +21,7 @@ namespace BookingCalendar.Controllers
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 4, 12), BookedInfo = "Go to holiday!" },
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 7, 20), BookedInfo = "Summer holidays!" },
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 9, 28), BookedInfo = "Winter, winter, winter..." },
-            new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 5, 16), BookedInfo = "Test - Sunday 16 May" }
+            // new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 5, 16), BookedInfo = "Test - Sunday 16 May" }
         };
 
         // GET: BookingTerms
