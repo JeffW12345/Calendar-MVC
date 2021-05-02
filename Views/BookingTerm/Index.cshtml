@@ -155,29 +155,25 @@
         });
 
         function setupActionsMobile() {
-            document.getElementById("title-container").style.textAlign = "left"; // To realign the H2 title
+            document.getElementById("title-container").style.textAlign = "left"; // To realign the H2 page title
             document.getElementById("calendar-container").style.display = "none"; // Makes non-mobile container invisible
-            var container = document.getElementById("calendar-container-mobile");
-            createCalendarsMobile(container); // Add 12 calendars to the calendar container
+            createCalendarsMobile(document.getElementById("calendar-container-mobile")); // Add 12 calendars to the calendar container
             addMonthRows(document.getElementsByClassName("months-mobile")); // Add 7 rows to each month
             addColsToMonths(); // Add columns to the month boxes (all rows containing a day of the week or dates)
             populateDaysOfWeek(); // Populate the days of the week rows
             addDateNumbers(document.getElementsByClassName("months-mobile"));
-            var combinedList = listOfDatesAndInfo();
-            addBlueOvals(combinedList);
-            addListeners(combinedList);
+            addBlueOvals(listOfDatesAndInfo());
+            addListeners(listOfDatesAndInfo());
         }
         function setupActionsNotMobile() {
-            var container = document.getElementById("calendar-container");
             document.getElementById("calendar-container-mobile").style.display = "none"; // Makes mobile container invisible
-            createCalendars(container); // Add 12 calendars to the calendar container
+            createCalendars(document.getElementById("calendar-container")); // Add 12 calendars to the calendar container
             addMonthRows(document.getElementsByClassName("months")); // Add 7 rows to each month
             addColsToMonths(); // Add columns to the month boxes (all rows containing a day of the week or dates)
             populateDaysOfWeek(); // Populate the days of the week rows
             addDateNumbers(document.getElementsByClassName("months"));
-            var combinedList = listOfDatesAndInfo();
-            addBlueOvals(combinedList);
-            addListeners(combinedList);
+            addBlueOvals(listOfDatesAndInfo());
+            addListeners(listOfDatesAndInfo());
         }
 
         function createCalendars(container) {
@@ -272,7 +268,6 @@
                 }
             }
         }
-
 
         function getDayName(dayNum) {
             switch (dayNum) {
