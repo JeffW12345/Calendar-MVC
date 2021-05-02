@@ -144,7 +144,7 @@
                     addDateNumbers();
                     var combinedList = listOfDatesAndInfo();
                     addBlueOvals(combinedList);
-                    addListeners(combinedList); // Event listeners for pop-up messages
+                    addListeners(combinedList);
                 }
             }
             else { }
@@ -302,16 +302,16 @@
             for (var list of combinedList) {
                 let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                 if (list[0] != "") {
-                    $(elem).addClass("blue-oval");
+                            $(elem).addClass("blue-oval");
                         }
                     }
                 }
 
                 function addListeners(combinedList) {
                     $('[data-toggle="tooltip"]').tooltip();
+
                     for (var list of combinedList) {
                         if (list[0] != "") {
-                            let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                             elem.addEventListener("click", displayMessage(list[3], elem));
                             elem.addEventListener("mouseout", removeMessage(list[3], elem));
                         }
