@@ -13,8 +13,7 @@ namespace BookingCalendar.Controllers
     public class BookingTermController : Controller
     {
         private BookingTermContext db = new BookingTermContext();
-
-        // These objects' data have already been added to the database.
+        
         public static List<BookingTerm> SampleBooking = new List<BookingTerm>()
         {
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 3, 30), BookedInfo = "Update clients SSL" },
@@ -27,12 +26,12 @@ namespace BookingCalendar.Controllers
         // GET: BookingTerms
         public ActionResult Index()
         {
+            // To remove any unwanted entries relating to previously used test objects. 
             DeleteRecords();
             AddRecords();
             return View(db.BookingTerm.ToList());
         }
 
-        // Methods below are to facilitate adding and removing test cases. 
         public void AddRecords()
         {
             foreach(var record in SampleBooking)
