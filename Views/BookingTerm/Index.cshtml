@@ -15,8 +15,6 @@
 <div id="title-container">
     <h2 style="text-align:center"><b>Booking Calendar</b></h2>
 </div>
-
-
 <!-- The two divs below are set to invisible -->
 <div id="booked-date">
     @foreach (var item in Model)
@@ -40,7 +38,7 @@
     #calendar-container {
         padding: 0px;
         width: 100vh;
-        height: 100vh;
+        height: 90vh;
         background-color: #F5F5F5;
     }
 
@@ -56,6 +54,7 @@
     .month-row {
         width: 100%;
         height: 12%;
+        border: 1px solid black;
     }
 
     .month-top-row {
@@ -63,6 +62,7 @@
         height: 12.5%;
         text-align: center;
         font-weight: 700;
+        border: 1px solid black;
     }
 
     .month-days-row {
@@ -70,6 +70,7 @@
         height: 12.5%;
         text-align: center;
         font-weight: 700;
+        border: 1px solid black;
     }
 
     .calendar-column {
@@ -78,6 +79,7 @@
         float: left;
         text-align: center;
         color: red;
+        border: 1px solid black;
     }
 
     .day-of-week-column {
@@ -123,31 +125,66 @@
     .tooltip.bs-tooltip-top .arrow:before {
         border-top-color: #1E90FF !important;
     }
+    /*
+        Mobile classes
+    */
+    #calendar-container-mobile {
+        padding: 3%;
+        margin: 10%;
+        width: 70vw;
+        height: 850vw;
+        background-color: green;
+        display: block;
+        border: 1px solid black;
+    }
+
+    .months-mobile {
+        width: 90%;
+        height: 5%;
+        margin: auto;
+        background-color: white;
+        border: 1px solid black;
+    }
+
 </style>
 
 
     <div id="calendar-container"> </div>
+    <div id="calendar-container-mobile"> </div>
 
     <script>
         $(document).ready(function () {
 
             let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
-            if (!isMobile) {
+            if (isMobile) {
                 setupActionsNotMobile();
                 function setupActionsNotMobile() {
                     var container = document.getElementById("calendar-container");
+                    document.getElementById("calendar-container-mobile").style.display = "none";
                     createCalendars(container); // Add 12 calendars to the calendar container
-                    addMonthRows(); // Add 7 rows to each month
+                    addMonthRows(document.getElementsByClassName("months")); // Add 7 rows to each month
                     addColsToMonths(); // Add columns to the month boxes (all rows containing a day of the week or dates)
                     populateDaysOfWeek(); // Populate the days of the week rows
-                    addDateNumbers();
+                    addDateNumbers(document.getElementsByClassName("months"));
                     var combinedList = listOfDatesAndInfo();
-                    addBlueOvals(combinedList);
-                    addListeners(combinedList);
+                    addBlueOvals(combinedList, isMobile);
+                    addListeners(combinedList, isMobile);
                 }
             }
-            else { }
+            else {
+                $("#title-calendar").width("70vx");
+                var container = document.getElementById("calendar-container-mobile");
+                document.getElementById("calendar-container").style.display = "none";
+                createCalendarsMobile(container); // Add 12 calendars to the calendar container
+                addMonthRows(document.getElementsByClassName("months-mobile")); // Add 7 rows to each month
+                addColsToMonths(); // Add columns to the month boxes (all rows containing a day of the week or dates)
+                populateDaysOfWeek(); // Populate the days of the week rows
+                addDateNumbers(document.getElementsByClassName("months-mobile"));
+                var combinedList = listOfDatesAndInfo();
+                addBlueOvals(combinedList, isMobile);
+                addListeners(combinedList, isMobile);
+            }
         });
 
                 function createCalendars(container) {
@@ -157,10 +194,18 @@
                         calendar.setAttribute("monthNumber", i);
                         container.appendChild(calendar);
                     }
-                }
+        }
 
-                function addMonthRows() {
-                    var months = document.getElementsByClassName("months");
+        function createCalendarsMobile(container) {
+            for (var i = 0; i < 12; i++) {
+                var calendar = document.createElement("div");
+                calendar.setAttribute("class", "months-mobile");
+                calendar.setAttribute("monthNumber", i);
+                container.appendChild(calendar);
+            }
+        }
+
+                function addMonthRows(months) {
                     var topRowCount = 0;
                     for (var month of months) {
                         for (var j = 0; j < 9; j++) {
@@ -210,7 +255,6 @@
 
                 function addColsToMonths() {
                     var rows = document.getElementsByClassName("month-row");
-
                     for (var individualRow of rows) {
                         if (individualRow.getAttribute("row-number") <= 1) {
                             continue;
@@ -257,8 +301,7 @@
                     }
                 }
 
-                function addDateNumbers() {
-                    var months = document.getElementsByClassName("months");
+                function addDateNumbers(months) {
                     for (var month of months) {
                         var year = new Date().getFullYear();
                         var monthNum = parseInt(month.getAttribute("monthNumber")); // Jan = 0, Feb = 1, etc.
@@ -297,8 +340,7 @@
                     return combinedList;
                 }
 
-        function addBlueOvals(combinedList) {
-            console.log(combinedList.length);
+        function addBlueOvals(combinedList, isMobile) {
             for (var list of combinedList) {
                 let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                 if (list[0] != "") {
@@ -307,18 +349,16 @@
                     }
                 }
 
-                function addListeners(combinedList) {
+                function addListeners(combinedList, isMobile) {
                     $('[data-toggle="tooltip"]').tooltip();
-
                     for (var list of combinedList) {
                         if (list[0] != "") {
+                            let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                             elem.addEventListener("click", displayMessage(list[3], elem));
                             elem.addEventListener("mouseout", removeMessage(list[3], elem));
                         }
                     }
                 }
-                // Add event listener and calendar entry
-
 
                 function displayMessage(message, elementToChange) {
                     elementToChange.setAttribute("href", "#");
@@ -334,16 +374,22 @@
                 // Month passed in using 0 = Jan, 1 = Feb, etc.
 
                 function getDateElem(day, mth, yr) {
-                    // Prevents dates from previous or future years being added.
                     if (yr != new Date().getFullYear()) {
-                        return;
+                        return; // Prevents dates from previous or future years being added.
                     }
-                    var month = document.getElementsByClassName("months")[mth];
+                    var month;
+                    if (document.getElementsByClassName("months")[mth] == null) {
+                        month = document.getElementsByClassName("months-mobile")[mth];
+                    }
+                    else {
+                        month = document.getElementsByClassName("months")[mth];
+                    }
+                    console.log(month);
                     var entries = month.getElementsByClassName("calendar-column");
-                    var dayOnFirstOfMonth = new Date(yr, mth, 1).getDay(); // With getDay() method, 0 is Sunday, 1 is Monday, etc
+                    var dayOnFirstOfMonth = new Date(yr, mth, 1).getDay(); // 0 is Sunday, 1 is Monday, etc
                     var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 2 : 5; // Because there may be blank cells, due to the first not being on Monday
                     return entries[day + daysToAdd];
-                }
+        }
 
     </script>
 
