@@ -4,10 +4,8 @@
     ViewBag.Title = "Index";
 }
 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <link rel="stylesheet" href="~/Content/Site.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -31,7 +29,6 @@
 </div>
 
 <style>
-
     #calendar-container {
         padding: 0px;
         width: 100vh;
@@ -183,14 +180,13 @@
             addListeners(combinedList);
         }
 
-
-                function createCalendars(container) {
-                    for (var i = 0; i < 12; i++) {
-                        var calendar = document.createElement("div");
-                        calendar.setAttribute("class", "months");
-                        calendar.setAttribute("monthNumber", i);
-                        container.appendChild(calendar);
-                    }
+        function createCalendars(container) {
+            for (var i = 0; i < 12; i++) {
+                var calendar = document.createElement("div");
+                calendar.setAttribute("class", "months");
+                calendar.setAttribute("monthNumber", i);
+                container.appendChild(calendar);
+            }
         }
 
         function createCalendarsMobile(container) {
@@ -202,190 +198,189 @@
             }
         }
 
-                function addMonthRows(months) {
-                    var topRowCount = 0;
-                    for (var month of months) {
-                        for (var j = 0; j < 9; j++) {
-                            var newRow = document.createElement("div");
-                            newRow.setAttribute("class", "month-row");
-                            newRow.setAttribute("row-number", j);
-                            if (j === 0) {
-                                newRow.setAttribute("class", "month-top-row");
-                                newRow.innerHTML = getMonthName(topRowCount++);
-                            }
-                            if (j === 2) {
-                                newRow.setAttribute("class", "month-days-row");
-                            }
-                            month.appendChild(newRow);
-                        }
+        function addMonthRows(months) {
+            var topRowCount = 0;
+            for (var month of months) {
+                for (var j = 0; j < 9; j++) {
+                    var newRow = document.createElement("div");
+                    newRow.setAttribute("class", "month-row");
+                    newRow.setAttribute("row-number", j);
+                    if (j === 0) {
+                        newRow.setAttribute("class", "month-top-row");
+                        newRow.innerHTML = getMonthName(topRowCount++);
                     }
-                }
-
-                function getMonthName(monthNumber) {
-                    switch (monthNumber) {
-                        case 0:
-                            return "January";
-                        case 1:
-                            return "February";
-                        case 2:
-                            return "March";
-                        case 3:
-                            return "April";
-                        case 4:
-                            return "May";
-                        case 5:
-                            return "June";
-                        case 6:
-                            return "July";
-                        case 7:
-                            return "August";
-                        case 8:
-                            return "September";
-                        case 9:
-                            return "October";
-                        case 10:
-                            return "November";
-                        default:
-                            return "December";
+                    if (j === 2) {
+                        newRow.setAttribute("class", "month-days-row");
                     }
+                    month.appendChild(newRow);
                 }
+            }
+        }
 
-                function addColsToMonths() {
-                    var rows = document.getElementsByClassName("month-row");
-                    for (var individualRow of rows) {
-                        if (individualRow.getAttribute("row-number") <= 1) {
-                            continue;
-                        }
-                        for (var k = 0; k < 7; k++) {
-                            var col = document.createElement("div");
-                            col.setAttribute("class", "calendar-column");
-                            individualRow.appendChild(col);
-                        }
-                    }
+        function getMonthName(monthNumber) {
+            switch (monthNumber) {
+                case 0:
+                    return "January";
+                case 1:
+                    return "February";
+                case 2:
+                    return "March";
+                case 3:
+                    return "April";
+                case 4:
+                    return "May";
+                case 5:
+                    return "June";
+                case 6:
+                    return "July";
+                case 7:
+                    return "August";
+                case 8:
+                    return "September";
+                case 9:
+                    return "October";
+                case 10:
+                    return "November";
+                default:
+                    return "December";
+            }
+        }             
+
+        function addColsToMonths() {
+            var rows = document.getElementsByClassName("month-row");
+            for (var individualRow of rows) {
+                if (individualRow.getAttribute("row-number") <= 1) {
+                    continue;
                 }
-
-
-                // Populate days of the week row
-                function populateDaysOfWeek() {
-                    var daysRow = document.getElementsByClassName("month-days-row")
-                    for (var thisMonthsRow of daysRow) {
-                        for (var colNum = 0; colNum < 7; colNum++) {
-                            var col = document.createElement("div");
-                            col.setAttribute("class", "day-of-week-column");
-                            col.innerHTML = getDayName(colNum);
-                            thisMonthsRow.appendChild(col);
-                        }
-                    }
+                for (var k = 0; k < 7; k++) {
+                    var col = document.createElement("div");
+                    col.setAttribute("class", "calendar-column");
+                    individualRow.appendChild(col);
                 }
+            }
+        }
 
-
-                function getDayName(dayNum) {
-                    switch (dayNum) {
-                        case 0:
-                            return "Mon";
-                        case 1:
-                            return "Tue";
-                        case 2:
-                            return "Wed";
-                        case 3:
-                            return "Thu";
-                        case 4:
-                            return "Fri";
-                        case 5:
-                            return "Sat";
-                        case 6:
-                            return "Sun";
-                    }
+        // Populate days of the week row
+        function populateDaysOfWeek() {
+            var daysRow = document.getElementsByClassName("month-days-row")
+            for (var thisMonthsRow of daysRow) {
+                for (var colNum = 0; colNum < 7; colNum++) {
+                    var col = document.createElement("div");
+                    col.setAttribute("class", "day-of-week-column");
+                    col.innerHTML = getDayName(colNum);
+                    thisMonthsRow.appendChild(col);
                 }
+            }
+        }
 
-                function addDateNumbers(months) {
-                    for (var month of months) {
-                        var year = new Date().getFullYear();
-                        var monthNum = parseInt(month.getAttribute("monthNumber")); // Jan = 0, Feb = 1, etc.
-                        var dayOnFirstOfMonth = new Date(year, monthNum, 1).getDay(); // With getDay() method, 0 is Sunday, 1 Monday, etc
-                        var daysInMonth = new Date(year, monthNum + 1, 0).getDate();
-                        var dateEntries = month.getElementsByClassName("calendar-column");
-                        var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 1 : 6; // Because there may be blank cells, due to the first not being on Monday
-                        var count = 1;
-                        for (var i = daysToAdd; i < daysToAdd + daysInMonth; i++) {
-                            dateEntries[i].textContent = count++;
-                        }
-                    }
+
+        function getDayName(dayNum) {
+            switch (dayNum) {
+                case 0:
+                    return "Mon";
+                case 1:
+                    return "Tue";
+                case 2:
+                    return "Wed";
+                case 3:
+                    return "Thu";
+                case 4:
+                    return "Fri";
+                case 5:
+                    return "Sat";
+                case 6:
+                    return "Sun";
+            }
+        }
+
+        function addDateNumbers(months) {
+            for (var month of months) {
+                var year = new Date().getFullYear();
+                var monthNum = parseInt(month.getAttribute("monthNumber")); // Jan = 0, Feb = 1, etc.
+                var dayOnFirstOfMonth = new Date(year, monthNum, 1).getDay(); // With getDay() method, 0 is Sunday, 1 Monday, etc
+                var daysInMonth = new Date(year, monthNum + 1, 0).getDate();
+                var dateEntries = month.getElementsByClassName("calendar-column");
+                var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 1 : 6; // Because there may be blank cells, due to the first not being on Monday
+                var count = 1;
+                for (var i = daysToAdd; i < daysToAdd + daysInMonth; i++) {
+                    dateEntries[i].textContent = count++;
                 }
+            }
+        }
 
-                // Create a list of dates and associated info.
+        // Create a list of dates and associated info.
 
-                function listOfDatesAndInfo() {
-                    var bookedDates = document.getElementById("booked-date").textContent;
-                    var bookedDatesList = bookedDates.split("00:00:00");
-                    var bookedInfo = document.getElementById("booked-info").textContent;
-                    bookedInfoList = bookedInfo.split("##");
-                    var combinedList = [];
-                    var count = 0;
-                    for (var bookedDatesListElem of bookedDatesList) {
-                        var tempList = [];
-                        bookedDatesListElem = bookedDatesListElem.trim();
-                        var d = bookedDatesListElem.substring(0, 2);
-                        var m = bookedDatesListElem.substring(3, 5);
-                        var y = bookedDatesListElem.substring(6, 10);
-                        tempList.push(d);
-                        tempList.push(m);
-                        tempList.push(y);
-                        tempList.push(bookedInfoList[count++]);
-                        combinedList.push(tempList);
-                    }
-                    return combinedList;
-                }
+        function listOfDatesAndInfo() {
+            var bookedDates = document.getElementById("booked-date").textContent;
+            var bookedDatesList = bookedDates.split("00:00:00");
+            var bookedInfo = document.getElementById("booked-info").textContent;
+            bookedInfoList = bookedInfo.split("##");
+            var combinedList = [];
+            var count = 0;
+            for (var bookedDatesListElem of bookedDatesList) {
+                var tempList = [];
+                bookedDatesListElem = bookedDatesListElem.trim();
+                var d = bookedDatesListElem.substring(0, 2);
+                var m = bookedDatesListElem.substring(3, 5);
+                var y = bookedDatesListElem.substring(6, 10);
+                tempList.push(d);
+                tempList.push(m);
+                tempList.push(y);
+                tempList.push(bookedInfoList[count++]);
+                combinedList.push(tempList);
+            }
+            return combinedList;
+        }
 
         function addBlueOvals(combinedList) {
             for (var list of combinedList) {
                 let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                 if (list[0] != "") {
-                            $(elem).addClass("blue-oval");
-                        }
-                    }
+                    $(elem).addClass("blue-oval");
                 }
+            }
+        }
 
-                function addListeners(combinedList) {
-                    $('[data-toggle="tooltip"]').tooltip();
-                    for (var list of combinedList) {
-                        if (list[0] != "") {
-                            let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
-                            elem.addEventListener("click", displayMessage(list[3], elem));
-                            elem.addEventListener("mouseout", removeMessage(list[3], elem));
-                        }
-                    }
+        function addListeners(combinedList) {
+            $('[data-toggle="tooltip"]').tooltip();
+            for (var list of combinedList) {
+                if (list[0] != "") {
+                    let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
+                    elem.addEventListener("click", displayMessage(list[3], elem));
+                    elem.addEventListener("mouseout", removeMessage(list[3], elem));
                 }
+            }
+        }
 
-                function displayMessage(message, elementToChange) {
-                    elementToChange.setAttribute("href", "#");
-                    elementToChange.setAttribute("data-toggle", "tooltip");
-                    elementToChange.setAttribute("title", message);
-                    elementToChange.setAttribute("data-placement", "top");
-                }
+        function displayMessage(message, elementToChange) {
+            elementToChange.setAttribute("href", "#");
+            elementToChange.setAttribute("data-toggle", "tooltip");
+            elementToChange.setAttribute("title", message);
+            elementToChange.setAttribute("data-placement", "top");
+        }
 
-                function removeMessage(message, elementToChange) {
-                    elementToChange.removeAttribute("data-toggle");
-                }
+        function removeMessage(message, elementToChange) {
+            elementToChange.removeAttribute("data-toggle");
+        }
 
-                // Month passed in using 0 = Jan, 1 = Feb, etc.
+        // Month passed in using 0 = Jan, 1 = Feb, etc.
 
-                function getDateElem(day, mth, yr) {
-                    if (yr != new Date().getFullYear()) {
-                        return; // Prevents dates from previous or future years being added.
-                    }
-                    // The class name used for 'month' depends on whether the device is a mobile or not. 
-                    var month;
-                    if (document.getElementsByClassName("months")[mth] == null) {
-                        month = document.getElementsByClassName("months-mobile")[mth];
-                    }
-                    else {
-                        month = document.getElementsByClassName("months")[mth];
-                    }
-                    var entries = month.getElementsByClassName("calendar-column");
-                    var dayOnFirstOfMonth = new Date(yr, mth, 1).getDay(); // 0 is Sunday, 1 is Monday, etc
-                    var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 2 : 5; // Because there may be blank cells, due to the first not being on Monday
-                    return entries[day + daysToAdd];
+        function getDateElem(day, mth, yr) {
+            if (yr != new Date().getFullYear()) {
+                return; // Prevents dates from previous or future years being added.
+            }
+            // The class name used for 'month' depends on whether the device is a mobile or not. 
+            var month;
+            if (document.getElementsByClassName("months")[mth] == null) {
+                month = document.getElementsByClassName("months-mobile")[mth];
+            }
+            else {
+                month = document.getElementsByClassName("months")[mth];
+            }
+            var entries = month.getElementsByClassName("calendar-column");
+            var dayOnFirstOfMonth = new Date(yr, mth, 1).getDay(); // 0 is Sunday, 1 is Monday, etc
+            var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 2 : 5; // Because there may be blank cells, due to the first not being on Monday
+            return entries[day + daysToAdd];
         }
 
     </script>

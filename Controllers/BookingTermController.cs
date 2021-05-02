@@ -47,7 +47,6 @@ namespace BookingCalendar.Controllers
             foreach (var record in db.BookingTerm)
             {
                 db.BookingTerm.Remove(record);
-
             }
             db.SaveChanges();
         }
