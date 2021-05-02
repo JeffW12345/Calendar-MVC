@@ -7,8 +7,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <link rel="stylesheet" href="~/Content/Site.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<h2 style="text-align:center"><b>Booking Calendar</b></h2>
+<div id="title-container">
+    <h2 style="text-align:center"><b>Booking Calendar</b></h2>
+</div>
+
 
 <!-- The two divs below are set to invisible -->
 <div id="booked-date">
@@ -26,11 +33,15 @@
 </div>
 
 <style>
+    #title-container {
+        width: 100vh
+    }
+
     #calendar-container {
         padding: 0px;
         width: 100vh;
         height: 100vh;
-        background-color: white;
+        background-color: #F5F5F5;
     }
 
     .months {
@@ -39,6 +50,7 @@
         height: 22%;
         padding: 2%;
         float: left;
+        background-color: white;
     }
 
     .month-row {
@@ -48,14 +60,14 @@
 
     .month-top-row {
         width: 100%;
-        height: 12%;
+        height: 12.5%;
         text-align: center;
         font-weight: 700;
     }
 
     .month-days-row {
         width: 100%;
-        height: 12%;
+        height: 12.5%;
         text-align: center;
         font-weight: 700;
     }
@@ -91,194 +103,234 @@
         text-align: center;
         color: white;
     }
-    .message {
-        background: #1E90FF;
+    <!--
+    From https://www.w3schools.com/css/tryit.asp?filename=trycss_tooltip_arrow_bottom -->
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: blue;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -60px;
+    }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: black transparent transparent transparent;
+        }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
     }
 </style>
 
-<div id="calendar-container"> </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
+    <div id="calendar-container"> </div>
 
-<script>
-    // Add 12 calendars to the calendar container
+    <script>
+        // Add 12 calendars to the calendar container
 
-    var container = document.getElementById("calendar-container");
-    for (var i = 0; i < 12; i++) {
-        var calendar = document.createElement("div");
-        calendar.setAttribute("class", "months");
-        calendar.setAttribute("monthNumber", i);
-        container.appendChild(calendar);
-    }
+        var container = document.getElementById("calendar-container");
+        for (var i = 0; i < 12; i++) {
+            var calendar = document.createElement("div");
+            calendar.setAttribute("class", "months");
+            calendar.setAttribute("monthNumber", i);
+            container.appendChild(calendar);
+        }
 
-    // Add 7 rows to each month
+        // Add 7 rows to each month
 
-    var months = document.getElementsByClassName("months");
-    var topRowCount = 0;
-    var thirdRowCount = 0;
-    for (var month of months) {
-        for (var j = 0; j < 9; j++) {
-            var newRow = document.createElement("div");
-            newRow.setAttribute("class", "month-row");
-            newRow.setAttribute("row-number", j);
-            if (j == 0) {
-                newRow.setAttribute("class", "month-top-row");
-                newRow.innerHTML = getMonthName(topRowCount++);
+        var months = document.getElementsByClassName("months");
+        var topRowCount = 0;
+        var thirdRowCount = 0;
+        for (var month of months) {
+            for (var j = 0; j < 9; j++) {
+                var newRow = document.createElement("div");
+                newRow.setAttribute("class", "month-row");
+                newRow.setAttribute("row-number", j);
+                if (j == 0) {
+                    newRow.setAttribute("class", "month-top-row");
+                    newRow.innerHTML = getMonthName(topRowCount++);
+                }
+                if (j == 2) {
+                    newRow.setAttribute("class", "month-days-row");
+                    thirdRowCount++;
+                }
+                month.appendChild(newRow);
             }
-            if (j == 2) {
-                newRow.setAttribute("class", "month-days-row");
-                thirdRowCount++;
+        }
+
+        function getMonthName(monthNumber) {
+            switch (monthNumber) {
+                case 0:
+                    return "January";
+                case 1:
+                    return "February";
+                case 2:
+                    return "March";
+                case 3:
+                    return "April";
+                case 4:
+                    return "May";
+                case 5:
+                    return "June";
+                case 6:
+                    return "July";
+                case 7:
+                    return "August";
+                case 8:
+                    return "September";
+                case 9:
+                    return "October";
+                case 10:
+                    return "November";
+                default:
+                    return "December";
             }
-            month.appendChild(newRow);
         }
-    }
 
-    function getMonthName(monthNumber) {
-        switch (monthNumber) {
-            case 0:
-                return "January";
-            case 1:
-                return "February";
-            case 2:
-                return "March";
-            case 3:
-                return "April";
-            case 4:
-                return "May";
-            case 5:
-                return "June";
-            case 6:
-                return "July";
-            case 7:
-                return "August";
-            case 8:
-                return "September";
-            case 9:
-                return "October";
-            case 10:
-                return "November";
-            default:
-                return "December";
+        // Add columns to the month boxes (all rows containing a day of the week or dates)
+
+        var rows = document.getElementsByClassName("month-row");
+
+        for (var individualRow of rows) {
+            if (individualRow.getAttribute("row-number") <= 1) {
+                continue;
+            }
+            for (var k = 0; k < 7; k++) {
+                var col = document.createElement("div");
+                col.setAttribute("class", "calendar-column");
+                individualRow.appendChild(col);
+            }
         }
-    }
 
-    // Add columns to the month boxes (all rows containing a day of the week or dates)
+        // Populate days of the week row
 
-    var rows = document.getElementsByClassName("month-row");
+        var daysRow = document.getElementsByClassName("month-days-row");
 
-    for (var individualRow of rows) {
-        if (individualRow.getAttribute("row-number") <= 1) {
-            continue;
+        for (var thisMonthsRow of daysRow) {
+            for (var colNum = 0; colNum < 7; colNum++) {
+                var col = document.createElement("div");
+                col.setAttribute("class", "day-of-week-column");
+                col.innerHTML = getDayName(colNum);
+                thisMonthsRow.appendChild(col);
+            }
         }
-        for (var k = 0; k < 7; k++) {
-            var col = document.createElement("div");
-            col.setAttribute("class", "calendar-column");
-            individualRow.appendChild(col);
+
+        function getDayName(dayNum) {
+            switch (dayNum) {
+                case 0:
+                    return "Mon";
+                case 1:
+                    return "Tue";
+                case 2:
+                    return "Wed";
+                case 3:
+                    return "Thu";
+                case 4:
+                    return "Fri";
+                case 5:
+                    return "Sat";
+                case 6:
+                    return "Sun";
+            }
         }
-    }
 
-    // Populate days of the week row
-
-    var daysRow = document.getElementsByClassName("month-days-row");
-
-    for (var thisMonthsRow of daysRow) {
-        for (var colNum = 0; colNum < 7; colNum++) {
-            var col = document.createElement("div");
-            col.setAttribute("class", "day-of-week-column");
-            col.innerHTML = getDayName(colNum);
-            thisMonthsRow.appendChild(col);
+        // Add day numbers to calendars
+        var months = document.getElementsByClassName("months");
+        for (var month of months) {
+            var year = new Date().getFullYear();
+            var monthNum = parseInt(month.getAttribute("monthNumber")); // Jan = 0, Feb = 1, etc.
+            var dayOnFirstOfMonth = new Date(year, monthNum, 1).getDay(); // With getDay() method, 0 is Sunday, 1 Monday, etc
+            var daysInMonth = new Date(year, monthNum + 1, 0).getDate();
+            var dateEntries = month.getElementsByClassName("calendar-column");
+            var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 1 : 6; // Because there may be blank cells, due to the first not being on Monday
+            var count = 1;
+            for (var i = daysToAdd; i < daysToAdd + daysInMonth; i++) {
+                dateEntries[i].textContent = count++;
+            }
         }
-    }
 
-    function getDayName(dayNum) {
-        switch (dayNum) {
-            case 0:
-                return "Mon";
-            case 1:
-                return "Tue";
-            case 2:
-                return "Wed";
-            case 3:
-                return "Thu";
-            case 4:
-                return "Fri";
-            case 5:
-                return "Sat";
-            case 6:
-                return "Sun";
+        // Create a list of dates and associated info.
+
+        var bookedDates = document.getElementById("booked-date").textContent;
+        var bookedDatesList = bookedDates.split("00:00:00");
+        var bookedInfo = document.getElementById("booked-info").textContent;
+        bookedInfoList = bookedInfo.split("##");
+        var combinedList = [];
+        var count = 0;
+        for (var bookedDatesListElem of bookedDatesList) {
+            var tempList = [];
+            bookedDatesListElem = bookedDatesListElem.trim();
+            var d = bookedDatesListElem.substring(0, 2);
+            var m = bookedDatesListElem.substring(3, 5);
+            var y = bookedDatesListElem.substring(6, 10);
+            tempList.push(d);
+            tempList.push(m);
+            tempList.push(y);
+            tempList.push(bookedInfoList[count++]);
+            combinedList.push(tempList);
         }
-    }
 
-    // Add day numbers to calendars
-    var months = document.getElementsByClassName("months");
-    for (var month of months) {
-        var year = new Date().getFullYear();
-        var monthNum = parseInt(month.getAttribute("monthNumber")); // Jan = 0, Feb = 1, etc.
-        var dayOnFirstOfMonth = new Date(year, monthNum, 1).getDay(); // With getDay() method, 0 is Sunday, 1 Monday, etc
-        var daysInMonth = new Date(year, monthNum + 1, 0).getDate();
-        var dateEntries = month.getElementsByClassName("calendar-column");
-        var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 1 : 6; // Because there may be blank cells, due to the first not being on Monday
-        var count = 1;
-        for (var i = daysToAdd; i < daysToAdd + daysInMonth; i++) {
-            dateEntries[i].textContent = count++;
+        // Add event listener and calendar entry
+
+
+        for (var list of combinedList) {
+            if (list[0] != "") {
+                let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
+                $(elem).addClass("blue-oval");
+                elem.addEventListener("click", displayMessage(list[3]));
+                elem.addEventListener("mouseout", removeMessage(list[3]));
+            }
         }
-    }
 
-    // Create a list of dates and associated info. 
-
-    var bookedDates = document.getElementById("booked-date").textContent;
-    var bookedDatesList = bookedDates.split("00:00:00");
-    var bookedInfo = document.getElementById("booked-info").textContent;
-    bookedInfoList = bookedInfo.split("##");
-    var combinedList = [];
-    var count = 0;
-    for (var bookedDatesListElem of bookedDatesList) {
-        var tempList = [];
-        bookedDatesListElem = bookedDatesListElem.trim();
-        var d = bookedDatesListElem.substring(0, 2);
-        var m = bookedDatesListElem.substring(3, 5);
-        var y = bookedDatesListElem.substring(6, 10);
-        tempList.push(d);
-        tempList.push(m);
-        tempList.push(y);
-        tempList.push(bookedInfoList[count++]);
-        combinedList.push(tempList);
-    }
-
-    // Add event listener and calendar entry
-
-    for (var list of combinedList) {
-        var elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
-        $(elem).addClass("blue-oval");
-        $(elem).addClass("message");
-        console.log(list[3]);
-        elem.onclick = function () {
-            var message = list[3];
-            alert(message);
-        };
-    }
-    // Month passed in using 0 = Jan, 1 = Feb, etc.
-
-    function getDateElem(day, mth, yr) {
-        // Prevents dates from previous or future years being added.
-        if (yr != new Date().getFullYear()) {
-            return;
+        function displayMessage(message) {
+             //elem.innerHTML += '<div class="tooltip">Hover over me <span class="tooltiptext" > Tooltip text</span> </div>';
+            $(elem).addClass("tooltip");
+            var newSpan = document.createElement('span');
+            $(newSpan).addClass("tooltiptext");
+            newSpan.innerHTML = message;
+            elem.appendChild(newSpan);
         }
-        var month = document.getElementsByClassName("months")[mth];
-        var entries = month.getElementsByClassName("calendar-column");
-        var dayOnFirstOfMonth = new Date(yr, mth, 1).getDay(); // With getDay() method, 0 is Sunday, 1 is Monday, etc
-        var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 2 : 5; // Because there may be blank cells, due to the first not being on Monday
-        console.log(day + daysToAdd);
-        return entries[day + daysToAdd];
-    }
 
-    function postMessage(message) {
+        function removeMessage(message) {
+            // TODO
+        }
 
-    }
 
-</script>
+        // Month passed in using 0 = Jan, 1 = Feb, etc.
+
+        function getDateElem(day, mth, yr) {
+            // Prevents dates from previous or future years being added.
+            if (yr != new Date().getFullYear()) {
+                return;
+            }
+            var month = document.getElementsByClassName("months")[mth];
+            var entries = month.getElementsByClassName("calendar-column");
+            var dayOnFirstOfMonth = new Date(yr, mth, 1).getDay(); // With getDay() method, 0 is Sunday, 1 is Monday, etc
+            var daysToAdd = dayOnFirstOfMonth != 0 ? dayOnFirstOfMonth - 2 : 5; // Because there may be blank cells, due to the first not being on Monday
+            return entries[day + daysToAdd];
+        }
+
+    </script>
 
 
 
