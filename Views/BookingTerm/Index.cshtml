@@ -219,6 +219,9 @@
 
         function addBlueOvals(combinedList) {
             for (var list of combinedList) {
+                if (parseInt(list[2]) !== new Date().getFullYear()) {
+                    continue; // Prevents dates from previous or future years being added.
+                }
                 let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                 if (list[0] != "") {
                     $(elem).addClass("blue-oval");
@@ -228,6 +231,9 @@
 
         function addListeners(combinedList) {
             for (var list of combinedList) {
+                if (parseInt(list[2]) !== new Date().getFullYear()) {
+                    continue; // Prevents dates from previous or future years being added.
+                }
                 if (list[0] != "") {
                     let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                     $(elem).click(displayMessage(list[3], elem));
@@ -250,9 +256,6 @@
         // Month passed in using 0 = Jan, 1 = Feb, etc.
 
         function getDateElem(day, mth, yr) {
-            if (yr != new Date().getFullYear()) {
-                return; // Prevents dates from previous or future years being added.
-            }
             // The class name used for 'month' depends on whether the device is a mobile or not. 
             var month;
             if (document.getElementsByClassName("months")[mth] == null) {
