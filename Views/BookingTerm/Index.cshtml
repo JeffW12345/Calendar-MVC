@@ -202,12 +202,12 @@
             var bookedInfoList = bookedInfo.split("##");
             var combinedList = [];
             var count = 0;
-            for (var bookedDatesListElem of bookedDatesList) {
+            for (var bookedDate of bookedDatesList) {
                 var tempList = [];
-                bookedDatesListElem = bookedDatesListElem.trim();
-                var d = bookedDatesListElem.substring(0, 2);
-                var m = bookedDatesListElem.substring(3, 5);
-                var y = bookedDatesListElem.substring(6, 10);
+                bookedDate = bookedDate.trim();
+                var d = bookedDate.substring(0, 2);
+                var m = bookedDate.substring(3, 5);
+                var y = bookedDate.substring(6, 10);
                 tempList.push(d);
                 tempList.push(m);
                 tempList.push(y);
