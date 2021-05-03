@@ -35,7 +35,7 @@
 
             let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
-            if (!isMobile) {
+            if (isMobile) {
                 setupActionsNotMobile();
                 }
                   
@@ -67,19 +67,19 @@
         }
 
         function createCalendars(container) {
-            for (var i = 0; i < 12; i++) {
+            for (var monthNum = 0; monthNum < 12; monthNum++) {
                 var calendar = document.createElement("div");
                 calendar.setAttribute("class", "months");
-                calendar.setAttribute("monthNumber", i);
+                calendar.setAttribute("monthNumber", monthNum);
                 container.appendChild(calendar);
             }
         }
 
         function createCalendarsMobile(container) {
-            for (var i = 0; i < 12; i++) {
+            for (var monthNum = 0; monthNum < 12; monthNum++) {
                 var calendar = document.createElement("div");
                 calendar.setAttribute("class", "months-mobile");
-                calendar.setAttribute("monthNumber", i);
+                calendar.setAttribute("monthNumber", monthNum);
                 container.appendChild(calendar);
             }
         }
@@ -87,15 +87,15 @@
         function addMonthRows(months) {
             var topRowCount = 0;
             for (var month of months) {
-                for (var j = 0; j < 9; j++) {
+                for (var rowNum = 0; rowNum < 9; rowNum++) {
                     var newRow = document.createElement("div");
                     newRow.setAttribute("class", "month-row");
-                    newRow.setAttribute("row-number", j);
-                    if (j === 0) {
+                    newRow.setAttribute("row-number", rowNum);
+                    if (rowNum === 0) {
                         newRow.setAttribute("class", "month-top-row");
                         newRow.innerHTML = getMonthName(topRowCount++);
                     }
-                    if (j === 2) {
+                    if (rowNum === 2) {
                         newRow.setAttribute("class", "month-days-row");
                     }
                     month.appendChild(newRow);
@@ -138,7 +138,7 @@
                 if (individualRow.getAttribute("row-number") <= 1) {
                     continue;
                 }
-                for (var k = 0; k < 7; k++) {
+                for (var colNum = 0; colNum < 7; colNum++) {
                     var col = document.createElement("div");
                     col.setAttribute("class", "calendar-column");
                     individualRow.appendChild(col);
@@ -150,10 +150,10 @@
         function populateDaysOfWeek() {
             var daysRow = document.getElementsByClassName("month-days-row")
             for (var thisMonthsRow of daysRow) {
-                for (var colNum = 0; colNum < 7; colNum++) {
+                for (var dayNum = 0; dayNum < 7; dayNum++) {
                     var col = document.createElement("div");
                     col.setAttribute("class", "day-of-week-column");
-                    col.innerHTML = getDayName(colNum);
+                    col.innerHTML = getDayName(dayNum);
                     thisMonthsRow.appendChild(col);
                 }
             }
