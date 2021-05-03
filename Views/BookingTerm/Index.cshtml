@@ -96,24 +96,87 @@
         color: white;
     }
 
+    .tooltip {
+        position: absolute;
+        z-index: 1020;
+        display: block;
+        visibility: visible;
+        padding: 5px;
+        font-size: 11px;
+    }
+
+        .tooltip.in {
+            opacity: 1;
+        }
+
+        .tooltip.top {
+            margin-top: -2px
+        }
+
+        .tooltip.right {
+            margin-left: 2px
+        }
+
+        .tooltip.bottom {
+            margin-top: 2px
+        }
+
+        .tooltip.left {
+            margin-left: -2px
+        }
+
+        .tooltip.top .tooltip-arrow {
+            bottom: 0;
+            left: 50%;
+            margin-left: -5px;
+            border-left: 5px solid;
+            border-right: 5px solid;
+            border-top: 5px solid #1E90FF;
+        }
+
+        .tooltip.left .tooltip-arrow {
+            top: 50%;
+            right: 0;
+            margin-top: -5px;
+            border-top: 5px solid;
+            border-bottom: 5px solid;
+            border-left: 5px solid #1E90FF;
+        }
+
+        .tooltip.bottom .tooltip-arrow {
+            top: 0;
+            left: 50%;
+            margin-left: -5px;
+            border-left: 5px solid;
+            border-right: 5px solid;
+            border-bottom: 5px solid #1E90FF;
+        }
+
+        .tooltip.right .tooltip-arrow {
+            top: 50%;
+            left: 0;
+            margin-top: -5px;
+            border-top: 5px solid;
+            border-bottom: 5px solid;
+            border-right: 5px solid #1E90FF;
+        }
+
     .tooltip-inner {
+        max-width: 200px;
+        padding: 3px 8px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
         background-color: #1E90FF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px
     }
 
-    .tooltip.bs-tooltip-right .arrow:before {
-        border-right-color: #1E90FF !important;
-    }
-
-    .tooltip.bs-tooltip-left .arrow:before {
-        border-left-color: #1E90FF !important;
-    }
-
-    .tooltip.bs-tooltip-bottom .arrow:before {
-        border-bottom-color: #1E90FF !important;
-    }
-
-    .tooltip.bs-tooltip-top .arrow:before {
-        border-top-color: #1E90FF !important;
+    .tooltip-arrow {
+        position: absolute;
+        width: 0;
+        height: 0
     }
     /*
         Mobile classes
@@ -337,25 +400,24 @@
         }
 
         function addListeners(combinedList) {
-            $('[data-toggle="tooltip"]').tooltip();
             for (var list of combinedList) {
                 if (list[0] != "") {
                     let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
                     elem.addEventListener("click", displayMessage(list[3], elem));
-                    elem.addEventListener("mouseout", removeMessage(list[3], elem));
+                    elem.addEventListener("mouseout", removeMessage(elem));
                 }
             }
         }
 
         function displayMessage(message, elementToChange) {
-            elementToChange.setAttribute("href", "#");
             elementToChange.setAttribute("data-toggle", "tooltip");
             elementToChange.setAttribute("title", message);
             elementToChange.setAttribute("data-placement", "top");
+            $(elementToChange).tooltip();
         }
 
-        function removeMessage(message, elementToChange) {
-            elementToChange.removeAttribute("data-toggle");
+        function removeMessage(elementToChange) {
+            $(elementToChange).removeAttr("title");
         }
 
         // Month passed in using 0 = Jan, 1 = Feb, etc.
