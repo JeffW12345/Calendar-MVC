@@ -5,7 +5,7 @@
 }
 
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<link rel="stylesheet" href="~/Content/Site.css">
+<link rel="stylesheet" type ="text/css" href="~/Content/Site.css">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -28,178 +28,6 @@
     }
 </div>
 
-<style>
-    #calendar-container {
-        padding: 0px;
-        width: 100vh;
-        height: 90vh;
-        background-color: #F5F5F5;
-    }
-
-    .months {
-        margin: 1%;
-        width: 31%;
-        height: 22%;
-        padding: 2%;
-        float: left;
-        background-color: white;
-    }
-
-    .month-row {
-        width: 100%;
-        height: 12%;
-    }
-
-    .month-top-row {
-        width: 100%;
-        height: 12.5%;
-        text-align: center;
-        font-weight: 700;
-    }
-
-    .month-days-row {
-        width: 100%;
-        height: 12.5%;
-        text-align: center;
-        font-weight: 700;
-    }
-
-    .calendar-column {
-        width: 14.2%;
-        height: 100%;
-        float: left;
-        text-align: center;
-        color: red;
-    }
-
-    .day-of-week-column {
-        width: 14.2%;
-        height: 100%;
-        float: left;
-        font-weight: 700;
-    }
-
-    #booked-date {
-        display: none;
-    }
-
-    #booked-info {
-        display: none;
-    }
-
-    .blue-oval {
-        width: 14.2%;
-        height: 100%;
-        background: #1E90FF;
-        border-radius: 100px / 50px;
-        text-align: center;
-        color: white;
-    }
-
-    .tooltip {
-        position: absolute;
-        z-index: 1020;
-        display: block;
-        visibility: visible;
-        padding: 5px;
-        font-size: 11px;
-    }
-
-        .tooltip.in {
-            opacity: 1;
-        }
-
-        .tooltip.top {
-            margin-top: -2px
-        }
-
-        .tooltip.right {
-            margin-left: 2px
-        }
-
-        .tooltip.bottom {
-            margin-top: 2px
-        }
-
-        .tooltip.left {
-            margin-left: -2px
-        }
-
-        .tooltip.top .tooltip-arrow {
-            bottom: 0;
-            left: 50%;
-            margin-left: -5px;
-            border-left: 5px solid;
-            border-right: 5px solid;
-            border-top: 5px solid #1E90FF;
-        }
-
-        .tooltip.left .tooltip-arrow {
-            top: 50%;
-            right: 0;
-            margin-top: -5px;
-            border-top: 5px solid;
-            border-bottom: 5px solid;
-            border-left: 5px solid #1E90FF;
-        }
-
-        .tooltip.bottom .tooltip-arrow {
-            top: 0;
-            left: 50%;
-            margin-left: -5px;
-            border-left: 5px solid;
-            border-right: 5px solid;
-            border-bottom: 5px solid #1E90FF;
-        }
-
-        .tooltip.right .tooltip-arrow {
-            top: 50%;
-            left: 0;
-            margin-top: -5px;
-            border-top: 5px solid;
-            border-bottom: 5px solid;
-            border-right: 5px solid #1E90FF;
-        }
-
-    .tooltip-inner {
-        max-width: 200px;
-        padding: 3px 8px;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        background-color: #1E90FF;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius: 4px
-    }
-
-    .tooltip-arrow {
-        position: absolute;
-        width: 0;
-        height: 0
-    }
-    /*
-        Mobile classes
-    */
-    #calendar-container-mobile {
-        padding: 3%;
-        margin: 10%;
-        width: 70vw;
-        height: 850vw;
-        background-color: #F5F5F5;
-        display: block;
-    }
-
-    .months-mobile {
-        width: 90%;
-        height: 5%;
-        margin: auto;
-        background-color: white;
-        border: 3px solid #F5F5F5;
-    }
-
-</style>
-
     <div id="calendar-container"> </div>
     <div id="calendar-container-mobile"> </div>
 
@@ -208,7 +36,7 @@
 
             let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
-            if (!isMobile) {
+            if (isMobile) {
                 setupActionsNotMobile();
                 }
                   
@@ -372,7 +200,7 @@
             var bookedDates = document.getElementById("booked-date").textContent;
             var bookedDatesList = bookedDates.split("00:00:00");
             var bookedInfo = document.getElementById("booked-info").textContent;
-            bookedInfoList = bookedInfo.split("##");
+            var bookedInfoList = bookedInfo.split("##");
             var combinedList = [];
             var count = 0;
             for (var bookedDatesListElem of bookedDatesList) {
@@ -399,12 +227,14 @@
             }
         }
 
+        var clicked = false;
+
         function addListeners(combinedList) {
             for (var list of combinedList) {
                 if (list[0] != "") {
                     let elem = getDateElem(parseInt(list[0]), parseInt(list[1]) - 1, parseInt(list[2]));
-                    elem.addEventListener("click", displayMessage(list[3], elem));
-                    elem.addEventListener("mouseout", removeMessage(elem));
+                    $(elem).click(displayMessage(list[3], elem));
+                    $(elem).mouseout(removeMessage(elem));
                 }
             }
         }
@@ -417,7 +247,7 @@
         }
 
         function removeMessage(elementToChange) {
-            $(elementToChange).removeAttr("title");
+            $(elementToChange).tooltip('hide');
         }
 
         // Month passed in using 0 = Jan, 1 = Feb, etc.
@@ -442,6 +272,181 @@
 
     </script>
 
+
+    <style>
+        #calendar-container {
+            padding: 0px;
+            width: 100vh;
+            height: 90vh;
+            background-color: #F5F5F5;
+        }
+
+        .months {
+            margin: 1%;
+            width: 31%;
+            height: 22%;
+            padding: 2%;
+            float: left;
+            background-color: white;
+        }
+
+        .month-row {
+            width: 100%;
+            height: 12%;
+        }
+
+        .month-top-row {
+            width: 100%;
+            height: 12.5%;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .month-days-row {
+            width: 100%;
+            height: 12.5%;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .calendar-column {
+            width: 14.2%;
+            height: 100%;
+            float: left;
+            text-align: center;
+            color: red;
+        }
+
+        .day-of-week-column {
+            width: 14.2%;
+            height: 100%;
+            float: left;
+            font-weight: 700;
+        }
+
+        #booked-date {
+            display: none;
+        }
+
+        #booked-info {
+            display: none;
+        }
+
+        .blue-oval {
+            width: 14.2%;
+            height: 100%;
+            background: #1E90FF;
+            border-radius: 100px / 50px;
+            text-align: center;
+            color: white;
+        }
+
+        .tooltip {
+            position: absolute;
+            z-index: 1020;
+            display: block;
+            visibility: visible;
+            padding: 5px;
+            font-size: 11px;
+        }
+
+            .tooltip.in {
+                opacity: 1;
+            }
+
+            .tooltip.top {
+                margin-top: -2px
+            }
+
+            .tooltip.right {
+                margin-left: 2px
+            }
+
+            .tooltip.bottom {
+                margin-top: 2px
+            }
+
+            .tooltip.left {
+                margin-left: -2px
+            }
+
+            .tooltip.top .tooltip-arrow {
+                background-color: #1E90FF;
+                bottom: 0;
+                left: 50%;
+                margin-left: -5px;
+                border-left: 5px solid;
+                border-right: 5px solid;
+                border-top: 5px solid #1E90FF;
+            }
+
+            .tooltip.left .tooltip-arrow {
+                background-color: #1E90FF;
+                top: 50%;
+                right: 0;
+                margin-top: -5px;
+                border-top: 5px solid;
+                border-bottom: 5px solid;
+                border-left: 5px solid #1E90FF;
+            }
+
+            .tooltip.bottom .tooltip-arrow {
+                background-color: #1E90FF;
+                top: 0;
+                left: 50%;
+                margin-left: -5px;
+                border-left: 5px solid;
+                border-right: 5px solid;
+                border-bottom: 5px solid #1E90FF;
+            }
+
+            .tooltip.right .tooltip-arrow {
+                background-color: #1E90FF;
+                top: 50%;
+                left: 0;
+                margin-top: -5px;
+                border-top: 5px solid;
+                border-bottom: 5px solid;
+                border-right: 5px solid #1E90FF;
+            }
+
+        .tooltip-inner {
+            max-width: 200px;
+            padding: 3px 8px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            background-color: #1E90FF;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px
+        }
+
+        .tooltip-arrow {
+            background-color: #1E90FF;
+            position: absolute;
+            width: 0;
+            height: 0
+        }
+        /* Mobile classes */
+
+        #calendar-container-mobile {
+            padding: 3%;
+            margin: 10%;
+            width: 70vw;
+            height: 1050vw;
+            background-color: #F5F5F5;
+            display: block;
+        }
+
+        .months-mobile {
+            width: 90%;
+            height: 5%;
+            margin: auto;
+            background-color: white;
+            border: 3px solid #F5F5F5;
+        }
+    </style>
 
 
 
