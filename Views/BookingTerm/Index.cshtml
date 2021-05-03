@@ -35,7 +35,7 @@
 
             let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
-            if (isMobile) {
+            if (!isMobile) {
                 setupActionsNotMobile();
                 }
                   
@@ -148,13 +148,13 @@
 
         // Populate days of the week row
         function populateDaysOfWeek() {
-            var daysRow = document.getElementsByClassName("month-days-row")
-            for (var thisMonthsRow of daysRow) {
+            var daysRowAllMonths = document.getElementsByClassName("month-days-row")
+            for (var daysRowIndividualMonth of daysRowAllMonths) {
                 for (var dayNum = 0; dayNum < 7; dayNum++) {
                     var col = document.createElement("div");
                     col.setAttribute("class", "day-of-week-column");
                     col.innerHTML = getDayName(dayNum);
-                    thisMonthsRow.appendChild(col);
+                    daysRowIndividualMonth.appendChild(col);
                 }
             }
         }
