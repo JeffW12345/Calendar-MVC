@@ -13,13 +13,15 @@ namespace BookingCalendar.Controllers
     public class BookingTermController : Controller
     {
         private BookingTermContext db = new BookingTermContext();
-        
+
         public static List<BookingTerm> SampleBooking = new List<BookingTerm>()
         {
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 3, 30), BookedInfo = "Update clients SSL" },
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 4, 12), BookedInfo = "Go to holiday!" },
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 7, 20), BookedInfo = "Summer holidays!" },
             new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 9, 28), BookedInfo = "Winter, winter, winter..." },
+            new BookingTerm() { BookedDay = new DateTime(2020, 10, 28), BookedInfo = "Wrong year test 1" },
+            new BookingTerm() { BookedDay = new DateTime(2024, 9, 29), BookedInfo = "Wrong year test 2" },
             // new BookingTerm() { BookedDay = new DateTime(DateTime.Now.Year, 5, 16), BookedInfo = "Test - Sunday 16 May" }
         };
 
