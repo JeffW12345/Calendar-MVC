@@ -7,5 +7,5 @@ The view file is at  Views > BookingTerm > Index.cshtml.
 
 The model and context are in Models > BookingTerm.cs.
 
-The controller is Controllers/BookingTermController.cs.
+The controller is Controllers > BookingTermController.cs.
 
